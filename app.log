@@ -1,0 +1,51 @@
+
+2024-09-23 17:44:22,848 - log_app - INFO - Request: GET http://127.0.0.1:8000/しししういし
+2024-09-23 17:44:22,848 - log_app - INFO - Request Body: 
+2024-09-23 17:44:22,849 - log_app - INFO - Response Body: {"detail":"Not Found"}
+2024-09-23 18:11:52,295 - log_app - INFO - Request: GET http://127.0.0.1:8000/test
+2024-09-23 18:11:52,295 - log_app - INFO - Request Body: 
+2024-09-23 18:11:52,296 - log_app - INFO - Response Body: {"message":"Hello World"}
+2024-09-23 18:12:27,523 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:12:27,523 - log_app - INFO - Request Body: 
+2024-09-23 18:13:42,889 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:13:42,889 - log_app - INFO - Request Body: 
+2024-09-23 18:17:27,313 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:17:27,313 - log_app - INFO - Request Body: 
+2024-09-23 18:19:27,107 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:19:27,107 - log_app - INFO - Request Body: 
+2024-09-23 18:27:57,649 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:27:57,649 - log_app - INFO - Request Body: 
+2024-09-23 18:28:20,158 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:28:20,159 - log_app - INFO - Request Body: 
+2024-09-23 18:28:49,970 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:28:49,970 - log_app - INFO - Request Body: 
+2024-09-23 18:31:47,993 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:31:47,994 - log_app - INFO - Request Body: 
+2024-09-23 18:33:47,078 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:33:47,078 - log_app - INFO - Request Body: 
+2024-09-23 18:34:14,889 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:34:14,889 - log_app - INFO - Request Body: 
+2024-09-23 18:34:15,066 - log_app - INFO - Response Body: d
+2024-09-23 18:35:00,490 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434429&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:35:00,491 - log_app - INFO - Request Body: 
+2024-09-23 18:35:06,903 - log_app - INFO - Response Body: data: 
+
+
+2024-09-23 18:36:11,256 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434428&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:36:11,256 - log_app - INFO - Request Body: 
+2024-09-23 18:36:19,152 - log_app - INFO - Response Body: data: 
+
+
+2024-09-23 18:44:02,751 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434428&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:44:02,751 - log_app - INFO - Request Body: 
+2024-09-23 18:44:02,848 - log_app - INFO - Response Body: d
+2024-09-23 18:44:36,131 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434428&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:44:36,131 - log_app - INFO - Request Body: 
+2024-09-23 18:44:42,668 - log_app - INFO - Response Body: data: 
+
+
+2024-09-23 18:45:28,439 - log_app - INFO - Request: GET http://127.0.0.1:8000/sapie/messages?session_id=06434426&question=ts%ED%8C%80%20%EA%B5%AC%EC%84%B1%20%EC%9D%B8%EC%9B%90%EC%9D%84%20%EC%95%8C%EB%A0%A4%EC%A4%98
+2024-09-23 18:45:28,439 - log_app - INFO - Request Body: 
+2024-09-23 18:45:36,553 - log_app - INFO - Response Body: data: 
+
+

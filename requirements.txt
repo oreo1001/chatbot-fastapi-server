@@ -1,0 +1,14 @@
+asyncio
+boto3==1.34.119
+botocore==1.34.119
+faiss-cpu==1.8.0
+fast-api
+langchain==0.2.1
+langchain-aws==0.1.6
+langchain-community==0.2.2
+langchain-core==0.2.3
+pymongo==4.7.3
+python-dateutil==2.9.0
+python-dotenv==1.0.1
+virtualenv==20.26.2
+gunicorn==22.0.0

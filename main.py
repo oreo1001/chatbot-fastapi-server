@@ -30,7 +30,7 @@ load_dotenv()
 
 async def log_reader(n=5):
     log_lines = []
-    with open(f"{base_dir}/{log_file}", "r") as file:
+    with open(f"{base_dir}/{log_file}", "r", encoding='utf-16') as file:
         for line in file.readlines()[-n:]:
             if line.__contains__("ERROR"):
                 log_lines.append(f'<span class="text-red-400">{line}</span><br/>')

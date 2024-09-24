@@ -49,8 +49,7 @@ async def websocket_endpoint_log(websocket: WebSocket):
     finally:
         await websocket.close()
 
-
-@app.get("/")
+@app.get("/logs")
 async def get(request: Request):
     context = {"title": "FastAPI Streaming Log Viewer over WebSockets", "log_file": log_file}
     return templates.TemplateResponse("index.html", {"request": request, "context": context})

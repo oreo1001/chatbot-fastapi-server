@@ -55,9 +55,12 @@ async def websocket_endpoint_log(websocket: WebSocket):
 
 @app.get("/logs")
 async def get(request: Request):
-    logging.info(f"Request: {os.getenv('WS_URL')}")
     context = {"title": "FastAPI Streaming Log Viewer over WebSockets", "log_file": log_file, "ws_url": os.getenv('WS_URL')}
     return templates.TemplateResponse("index.html", {"request": request, "context": context})
+
+@app.get('/')
+async def home():
+    return {"message":"main page"}
 
 @app.get("/test")
 async def test():

@@ -10,7 +10,8 @@ def log_config():
     #경로 설정
     real_path = os.path.realpath(__file__)
     dir_path = os.path.dirname(real_path)
-    LOGFILE = f"{dir_path}/app.log"
+    # LOGFILE = f"{dir_path}/app.log"
+    LOGFILE = os.path.join(dir_path,'app.log')
 
     #로그 형식 등 설정
     logger = logging.getLogger("log_app")

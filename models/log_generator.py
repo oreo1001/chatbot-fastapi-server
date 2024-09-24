@@ -38,7 +38,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
         response = await call_next(request)
 
-        if(request.url.path !='/logs' or 'static' in request.url.path): 
+        if(request.url.path !='/logs' or 'static' in request.url.path or request.url.path !='/'): 
             response_body = [chunk async for chunk in response.body_iterator]
             if response_body:
                 logger.info(f"Response Body: {response_body[0].decode('utf-8',errors='ignore')}")

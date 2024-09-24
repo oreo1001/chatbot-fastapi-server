@@ -1,5 +1,7 @@
 import asyncio
-from fastapi import FastAPI, Path, Request, WebSocket
+import logging
+import os
+from fastapi import FastAPI, Path, Request, WebSocket, logger
 from fastapi.concurrency import iterate_in_threadpool
 from fastapi.templating import Jinja2Templates 
 from pathlib import Path
@@ -7,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from models.log_generator import LoggingMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from saltware import router as sapie_router
+from dotenv import load_dotenv
 
 app =FastAPI()
 base_dir = Path(__file__).resolve().parent
@@ -23,6 +26,7 @@ app.add_middleware(
     allow_headers=["*"], 
 )
 app.add_middleware(LoggingMiddleware)
+load_dotenv()
 
 async def log_reader(n=5):
     log_lines = []
@@ -51,7 +55,8 @@ async def websocket_endpoint_log(websocket: WebSocket):
 
 @app.get("/logs")
 async def get(request: Request):
-    context = {"title": "FastAPI Streaming Log Viewer over WebSockets", "log_file": log_file}
+    logging.info(f"Request: {os.getenv('WS_URL')}")
+    context = {"title": "FastAPI Streaming Log Viewer over WebSockets", "log_file": log_file, "ws_url": os.getenv('WS_URL')}
     return templates.TemplateResponse("index.html", {"request": request, "context": context})
 
 @app.get("/test")

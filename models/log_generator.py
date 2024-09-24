@@ -2,6 +2,7 @@ import logging
 import random
 import time
 import os
+import chardet
 from fastapi import Request
 from fastapi.concurrency import iterate_in_threadpool
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -40,8 +41,13 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
         if(request.url.path !='/'): 
             response_body = [chunk async for chunk in response.body_iterator]
+            # result = chardet.detect(response_body)
+            # encoding = result['encoding']
+            # decoded_text = response_body.decode(encoding)
+            # if response_body:
+            #     logger.info(f"Response Body: {decoded_text}")
             if response_body:
-                logger.info(f"Response Body: {response_body[0].decode()}")
+                logger.info(f"Response Body: {response_body[0].decode('utf-8',errors='ignore')}")
             response.body_iterator = iterate_in_threadpool(iter(response_body))
             # logger.info(f"Response: {response.status_code}")
         return response

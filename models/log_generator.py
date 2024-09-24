@@ -14,7 +14,6 @@ def log_config():
     parent_dir = os.path.dirname(dir_path)
     # 로그 파일 경로를 상위 디렉토리에 설정
     LOGFILE = os.path.join(parent_dir, 'app.log')
-    print(LOGFILE)
 
     #로그 형식 등 설정
     logger = logging.getLogger("log_app")
@@ -39,13 +38,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
         response = await call_next(request)
 
-        if(request.url.path !='/'): 
+        if(request.url.path !='/logs' or 'static' in request.url.path): 
             response_body = [chunk async for chunk in response.body_iterator]
-            # result = chardet.detect(response_body)
-            # encoding = result['encoding']
-            # decoded_text = response_body.decode(encoding)
-            # if response_body:
-            #     logger.info(f"Response Body: {decoded_text}")
             if response_body:
                 logger.info(f"Response Body: {response_body[0].decode('utf-8',errors='ignore')}")
             response.body_iterator = iterate_in_threadpool(iter(response_body))

@@ -4,9 +4,9 @@ from fastapi.concurrency import iterate_in_threadpool
 from fastapi.templating import Jinja2Templates 
 from pathlib import Path
 from fastapi.staticfiles import StaticFiles
-from log_generator import LoggingMiddleware
+from models.log_generator import LoggingMiddleware
 from fastapi.middleware.cors import CORSMiddleware
-from sapie import router as sapie_router
+from saltware import router as sapie_router
 
 app =FastAPI()
 base_dir = Path(__file__).resolve().parent

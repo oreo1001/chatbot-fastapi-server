@@ -3,21 +3,16 @@ import json
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 import pytz
-# from custom_mongo_chat import CustomMongoDBChatHistory
-# from langchain_core.runnables.history import RunnableWithMessageHistory
-from sapie_model import SapieService
-# from langchain_core.runnables import RunnableLambda
+from models.saltware_model import SaltwareService
+from pymongo import MongoClient
+from models import connectionString
 
 router = APIRouter(
-    prefix="/sapie",
-    tags=["sapie"],
+    prefix="/saltware",
+    tags=["saltware"],
     responses={404: {"description": "Not found"}}
 )
 korea_tz = pytz.timezone("Asia/Seoul")
-from pymongo import MongoClient
-
-#connectionString = "mongodb://dba:20240731@localhost:11084/"
-connectionString = "mongodb://localhost:27017/"
 dbClient = MongoClient(connectionString)
 db = dbClient['saltware']
 historyCollection = db["chat_histories"]
@@ -39,7 +34,7 @@ async def get_message(session_id: str, question: str):
         return StreamingResponse(error1(),headers = headers,media_type='text/event-stream')
     if not question:
         return StreamingResponse(error2(),headers = headers,media_type='text/event-stream')
-    service = SapieService()
+    service = SaltwareService()
     return service.run_langchain_stream(question=question, sessionId=session_id)
 
 @router.delete("/messages")

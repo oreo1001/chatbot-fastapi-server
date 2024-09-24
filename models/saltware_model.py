@@ -10,10 +10,11 @@ from langchain_aws import ChatBedrock
 from langchain_community.embeddings import BedrockEmbeddings
 from pymongo import MongoClient
 
-from custom_mongo_chat import CustomMongoDBChatHistory
+from models.custom_mongo_chat import CustomMongoDBChatHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.runnables import RunnableLambda
 from dotenv import load_dotenv
+from models import connectionString
 
 connectionString = "mongodb://localhost:27017/"
 dbClient = MongoClient(connectionString)
@@ -26,7 +27,7 @@ headers = {
     'Content-Type': 'text/event-stream'
 }
 
-class SapieService:
+class SaltwareService:
     def __init__(self):
         load_dotenv()
         self.bedrock_runtime = boto3.client(

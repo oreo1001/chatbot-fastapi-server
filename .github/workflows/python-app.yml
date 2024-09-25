@@ -25,5 +25,8 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }} # 접속포트
           script: | # 실행할 스크립트
             sudo -i
-            cd /home/ubuntu
-            echo "hello" > hello.txt
+            cd /home/sapie-fastapi-server
+            . venv/bin/activate
+            git pull origin main
+            sudo fuser -k 8000/tcp
+            systemctl restart fastapi

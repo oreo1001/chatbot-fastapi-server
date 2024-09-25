@@ -111,6 +111,9 @@ async def home(request:Request):
 @app.get("/test")
 async def test():
     return {"message": "Hello World"}
+@app.get("/test2")
+async def test2():
+    return {"message": "워크플로우 테스트"}
 
 app.include_router(sapie_router)
 

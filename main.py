@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from saltware import router as sapie_router
 from dotenv import load_dotenv
 from logging.handlers import RotatingFileHandler
+from starlette.websockets import WebSocketDisconnect
 
 app =FastAPI()
 base_dir = Path(__file__).resolve().parent
@@ -86,10 +87,12 @@ async def websocket_endpoint_log(websocket: WebSocket):
             await asyncio.sleep(1)
             logs = await log_reader(30)
             await websocket.send_text(logs)
-    except Exception as e:
-        print(e)
-    finally:
+    except WebSocketDisconnect:
         await websocket.close()
+    # except Exception as e:
+    #     print(e)
+    # finally:
+    #     await websocket.close()
 
 @app.get("/logs")
 async def get(request: Request):

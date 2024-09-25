@@ -61,8 +61,6 @@ load_dotenv()
 # 전역 예외 처리기
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    tb = traceback.format_exc()
-    logger.error(tb)
     logger.error(f"Unhandled error: {exc}", exc_info=True)
     return JSONResponse(
         status_code=500,
@@ -101,8 +99,9 @@ async def get(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "context": context})
 
 @app.get('/')
-async def home():
-    return {"message":"main page"}
+async def home(request:Request):
+    data = await request.json()
+    return {"message":data}
 
 @app.get("/test")
 async def test():

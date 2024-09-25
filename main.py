@@ -100,8 +100,12 @@ async def get(request: Request):
 
 @app.get('/')
 async def home(request:Request):
-    data = await request.json()
-    return {"message":data}
+    try:
+        data = await request.json()
+        if data:
+            return {"message": data}
+    except Exception:
+        pass
 
 @app.get("/test")
 async def test():

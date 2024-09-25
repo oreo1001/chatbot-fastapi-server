@@ -1,8 +1,10 @@
 import os
+from dotenv import load_dotenv
 
 __all__ = ['connectionString']
 BUCKET_NAME = "sapie-files"
 
+load_dotenv()
 currentEnv = os.getenv('FAST_ENV')
 if (currentEnv=='production'):
     connectionString = "mongodb://dba:20240925@localhost:11084/"

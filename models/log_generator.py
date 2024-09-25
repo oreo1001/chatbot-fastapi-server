@@ -2,49 +2,42 @@ import logging
 import random
 import time
 import os
+import traceback
 import chardet
-from fastapi import Request
+from fastapi import Request, Response
 from fastapi.concurrency import iterate_in_threadpool
 from starlette.middleware.base import BaseHTTPMiddleware
 
-def log_config():
-    #경로 설정
-    real_path = os.path.realpath(__file__)
-    dir_path = os.path.dirname(real_path)
-    parent_dir = os.path.dirname(dir_path)
-    # 로그 파일 경로를 상위 디렉토리에 설정
-    LOGFILE = os.path.join(parent_dir, 'app.log')
-
-    #로그 형식 등 설정
-    logger = logging.getLogger("log_app")
-    logger.setLevel(logging.DEBUG)
-
-    if not logger.handlers:  #이거 없으면 두번씩 출력됨 핸들러땜에
-        file_handler = logging.FileHandler(LOGFILE)
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
-    return logger
-
-logger = log_config()
-
 # Request 및 Response 로깅 미들웨어
 class LoggingMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app, logger):
+        super().__init__(app)
+        self.logger = logger
     async def dispatch(self, request: Request, call_next):
-        if(request.url.path !='/'): 
-            body = await request.body()
-            logger.info(f"Request: {request.method} {request.url}")
-            logger.info(f"Request Body: {body.decode()}")
+        try:
+            if(request.url.path !='/logs'): 
+                body = await request.body()
+                self.logger.info(f"Request: {request.method} {request.url}")
+                self.logger.info(f"Request Body: {body.decode()}")
+            response = await call_next(request)
 
-        response = await call_next(request)
-
-        if(request.url.path !='/logs' or 'static' in request.url.path or request.url.path !='/'): 
-            response_body = [chunk async for chunk in response.body_iterator]
-            if response_body:
-                logger.info(f"Response Body: {response_body[0].decode('utf-8',errors='ignore')}")
-            response.body_iterator = iterate_in_threadpool(iter(response_body))
-            # logger.info(f"Response: {response.status_code}")
-        return response
+            if request.url.path != '/logs' and 'static' not in request.url.path:
+                response_body = b""
+                async for chunk in response.body_iterator:
+                    response_body += chunk
+                if response_body:
+                    self.logger.info(f"Response Body: {response_body.decode('utf-8', errors='ignore')}")
+                return Response(content=response_body, status_code=response.status_code, headers=dict(response.headers), media_type=response.media_type)
+            return response
+        except Exception as e:
+            tb = traceback.format_exc()
+            self.logger.error("Exception occurred: %s\n%s", str(e), tb)
+            self.logger.exception(e)
+            return Response(
+                content=b"Internal Server Error",
+                status_code=500,
+                media_type="application/json"
+            )
 
 #test용
 # while True:
@@ -56,3 +49,9 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 #     else:
 #         logger.info(f"Random message generated: {random_number}")
 #     time.sleep(1)
+
+            # response_body = [chunk async for chunk in response.body_iterator]
+            # if response_body:
+            #     logger.info(f"Response Body: {response_body[0].decode('utf-8',errors='ignore')}")
+            # response.body_iterator = iterate_in_threadpool(iter(response_body))
+            # logger.info(f"Response: {response.status_code}")

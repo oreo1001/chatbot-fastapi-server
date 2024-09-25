@@ -16,7 +16,6 @@ from langchain_core.runnables import RunnableLambda
 from dotenv import load_dotenv
 from models import connectionString
 
-connectionString = "mongodb://localhost:27017/"
 dbClient = MongoClient(connectionString)
 db = dbClient['saltware']
 historyCollection = db["chat_histories"]

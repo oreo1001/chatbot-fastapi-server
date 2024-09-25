@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates 
 from pathlib import Path
 from fastapi.staticfiles import StaticFiles
-from models.log_generator import LoggingMiddleware
+from models.logging_middleware import LoggingMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from saltware import router as sapie_router
 from dotenv import load_dotenv

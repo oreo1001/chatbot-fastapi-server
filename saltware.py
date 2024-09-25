@@ -72,18 +72,4 @@ async def post_message_list(request: Request):
     messageList.append(message)
     messageList.append(message)
     return JSONResponse(content={"msList": messageList})
-
-
-@router.post("/urlList")
-async def post_message_list(request: Request):
-        sessionId = request.json.get("session_id")
-        print(sessionId)
-        historyDB = historyCollection.find_one(
-                {"SessionId": sessionId},
-                {"History": {"$slice": -1}}  # History 배열의 마지막 항목만 가져옴
-            )
-        print(historyDB) 
-        if historyDB==None:
-            return {"url_list":[]}
-        return {"url_list":historyDB['History'][0]['data']['response_metadata']['url_list']} 
 ######################################################################################

@@ -5,6 +5,6 @@ BUCKET_NAME = "sapie-files"
 
 currentEnv = os.getenv('FAST_ENV')
 if (currentEnv=='production'):
-    connectionString = "mongodb://dba:20240924@localhost:11084/"
+    connectionString = "mongodb://dba:20240925@localhost:11084/"
 else:
     connectionString = "mongodb://localhost:27017/"

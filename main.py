@@ -56,8 +56,7 @@ app.add_middleware(
 app.add_middleware(LoggingMiddleware,logger=logger)
 load_dotenv()
 
-#print(1/0)
-
+#print(1/0) 오류 예시
 # 전역 예외 처리기
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):

@@ -103,7 +103,7 @@ class SaltwareService:
                 {"$set": {"History.$.data.response_metadata": {"url_list":url_list}}}  # response_metadata 업데이트
             )
         final_data = {"url_list": url_list}
-        yield f"event: data_event\ndata: {json.dumps(final_data)}\n\n"
+        # yield f"event: data_event\ndata: {json.dumps(final_data)}\n\n"
         yield 'data: \u200C\n\n'
     
     def run_langchain_stream(self,question, sessionId):

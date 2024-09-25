@@ -21,7 +21,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                 self.logger.info(f"Request Body: {body.decode()}")
             response = await call_next(request)
 
-            if request.url.path != '/logs' and 'static' not in request.url.path:
+            if request.url.path != '/logs' and 'static' not in request.url.path and request.url.path !='/':
                 response_body = b""
                 async for chunk in response.body_iterator:
                     response_body += chunk

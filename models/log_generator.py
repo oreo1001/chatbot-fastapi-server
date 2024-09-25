@@ -15,7 +15,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         self.logger = logger
     async def dispatch(self, request: Request, call_next):
         try:
-            if(request.url.path !='/logs'): 
+            if(request.url.path !='/logs' and request.url.path !='/'): 
                 body = await request.body()
                 self.logger.info(f"Request: {request.method} {request.url}")
                 self.logger.info(f"Request Body: {body.decode()}")

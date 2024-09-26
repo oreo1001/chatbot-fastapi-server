@@ -11,10 +11,11 @@ from pathlib import Path
 from fastapi.staticfiles import StaticFiles
 from models.logging_middleware import LoggingMiddleware
 from fastapi.middleware.cors import CORSMiddleware
-from saltware import router as sapie_router
+from saltware import router as saltware_router
 from dotenv import load_dotenv
 from logging.handlers import RotatingFileHandler
 from starlette.websockets import WebSocketDisconnect
+from kakaoBot import router as kakao_router
 
 app =FastAPI()
 base_dir = Path(__file__).resolve().parent
@@ -115,7 +116,8 @@ async def test():
 async def test2():
     return {"message": "워크플로우 테스트"}
 
-app.include_router(sapie_router)
+app.include_router(saltware_router)
+app.include_router(kakao_router)
 
 # if __name__ == "__main__":        #.파일만 실행해도 서버가 실행되게
 #     import uvicorn

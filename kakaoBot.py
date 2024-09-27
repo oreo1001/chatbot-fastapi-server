@@ -46,3 +46,10 @@ async def get_message(question , session_id, callback_url):
     async with aiohttp.ClientSession() as session:
         await session.post(callback_url, json=response_data)
 
+@router.post("/test")
+async def test(request: Request):
+    kakao_ai_request = await request.json()
+    question = kakao_ai_request['userRequest']['utterance']
+    session_id = kakao_ai_request['userRequest']['user']['id']
+    service = KakaoService()
+    return service.run_langchain_json(question=question, sessionId=session_id)

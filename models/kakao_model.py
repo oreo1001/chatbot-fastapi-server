@@ -96,7 +96,7 @@ class KakaoService:
                     "dialog":"reply"
                 }
             }
-            return json.dumps(payload)
+            return JSONResponse(content=payload, headers={"Content-Type": "application/json"})
         except Exception as e:
             payload = {
                 "answer": {
@@ -105,4 +105,4 @@ class KakaoService:
                     "dialog":"finish"
                 }
             }
-            return json.dumps(payload)
+            return JSONResponse(content=payload, headers={"Content-Type": "application/json"})

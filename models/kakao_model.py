@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 from models import connectionString
 
 dbClient = MongoClient(connectionString)
-db = dbClient['saltware']
+db = dbClient['kakao']
 historyCollection = db["chat_histories"]
 
 headers = {
@@ -26,7 +26,7 @@ headers = {
     'Content-Type': 'text/event-stream'
 }
 
-class SaltwareService:
+class KakaoService:
     def __init__(self):
         load_dotenv()
         self.bedrock_runtime = boto3.client(
@@ -46,8 +46,6 @@ class SaltwareService:
             client=self.bedrock_runtime,
             model_id=model_id,
             model_kwargs=model_kwargs,
-            streaming=True,  # 스트리밍으로 답변을 받기 위한 설정
-            callbacks=[StreamingStdOutCallbackHandler()]  # 스트리밍으로 답변을 받기 위한 콜백
         )
 
         embeddings_model = BedrockEmbeddings(model_id="amazon.titan-embed-text-v1", client=self.bedrock_runtime)
@@ -72,47 +70,14 @@ class SaltwareService:
         self.salt_rag_chain = create_retrieval_chain(self.retriever, self.question_answer_chain)
     def get_chain(self):
         return self.salt_rag_chain
-    
-    def get_response(self,chain, prompt, config, sessionId):
-        url_list = []
         
-        # stream으로 데이터를 받아오면서 URL과 응답 처리 통합
-        for chunk in chain.stream({"input": prompt}, config):
-            # 문서가 포함된 context에서 URL을 추출
-            if 'context' in chunk:
-                for document in chunk['context']:
-                    s3_url = document.metadata.get('s3_url')
-                    source_file = document.metadata.get('source_file')
-                    doc_info = {"s3_url": s3_url, "source_file": source_file}
-                    if s3_url and not any(doc['s3_url'] == s3_url for doc in url_list):
-                        url_list.append(doc_info)
-            
-            # 답변이 포함된 경우, 스트리밍 응답 전송
-            if 'answer' in chunk:
-                response_replaced = chunk['answer'].replace('\n', '🖐️')
-                yield f"data: {response_replaced}\n\n"
-                # time.sleep(0.001)  # 필요한 경우에만 사용
-        history_db = historyCollection.find_one(
-            {"SessionId": sessionId},
-            {"History": {"$slice": -1}}  # History 배열의 마지막 항목만 가져옴
-        )
-        if  history_db and "History" in  history_db and len(history_db["History"]) > 0:
-            recent_history = history_db["History"][0]
-            historyCollection.update_one(
-                {"SessionId": sessionId, "History": recent_history},
-                {"$set": {"History.$.data.response_metadata": {"url_list":url_list}}}  # response_metadata 업데이트
-            )
-        final_data = {"url_list": url_list}
-        # yield f"event: data_event\ndata: {json.dumps(final_data)}\n\n"
-        yield 'data: \u200C\n\n'
-    
-    def run_langchain_stream(self,question, sessionId):
+    def run_langchain_json(self,question, sessionId):
         conversational_rag_chain = RunnableWithMessageHistory(
             self.get_chain(),
             lambda session_id: CustomMongoDBChatHistory(
                 session_id=session_id,
                 connection_string=connectionString,
-                database_name="saltware",
+                database_name="kakao",
                 collection_name="chat_histories",
             ),
             input_messages_key="input",
@@ -120,11 +85,10 @@ class SaltwareService:
             output_messages_key="answer",
         )
         try:
-            config = {"configurable": {"session_id": sessionId}}
-            # 스트리밍 응답을 직접 처리
-            return StreamingResponse(self.get_response(conversational_rag_chain, question, config, sessionId),
-                            headers=headers,
-                            media_type='text/event-stream')
+            chat_invoke = conversational_rag_chain.invoke(
+                {"input": question},
+                config={"configurable": {"session_id": sessionId}},
+            )
+            return JSONResponse(content={"message": chat_invoke['answer']})
         except Exception as e:
-            return StreamingResponse(f"data: Error: {str(e)}\n\n", media_type='text/event-stream')
-        
+            return JSONResponse(content={"message": f"Error: {str(e)}"})

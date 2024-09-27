@@ -1,6 +1,6 @@
 import json
 import boto3
-from fastapi.responses import StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -127,4 +127,26 @@ class SaltwareService:
                             media_type='text/event-stream')
         except Exception as e:
             return StreamingResponse(f"data: Error: {str(e)}\n\n", media_type='text/event-stream')
+        
+    def run_langchain_json(self,question, sessionId):
+        conversational_rag_chain = RunnableWithMessageHistory(
+            self.get_chain(),
+            lambda session_id: CustomMongoDBChatHistory(
+                session_id=session_id,
+                connection_string=connectionString,
+                database_name="saltware",
+                collection_name="chat_histories",
+            ),
+            input_messages_key="input",
+            history_messages_key="chat_history",
+            output_messages_key="answer",
+        )
+        try:
+            chat_invoke = conversational_rag_chain.invoke(
+                {"input": question},
+                config={"configurable": {"session_id": sessionId}},
+            )
+            return JSONResponse(content={"message": chat_invoke['answer']})
+        except Exception as e:
+            return JSONResponse(content={"message": f"Error: {str(e)}"})
         

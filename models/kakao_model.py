@@ -89,6 +89,20 @@ class KakaoService:
                 {"input": question},
                 config={"configurable": {"session_id": sessionId}},
             )
-            return JSONResponse(content={"message": chat_invoke['answer']})
+            payload = {
+                "answer": {
+                    "status": "normal",
+                    "sentence": chat_invoke['answer'],
+                    "dialog":"reply"
+                }
+            }
+            return json.dumps(payload)
         except Exception as e:
-            return JSONResponse(content={"message": f"Error: {str(e)}"})
+            payload = {
+                "answer": {
+                    "status": "error",
+                    "sentence": f"Error: {str(e)}",
+                    "dialog":"finish"
+                }
+            }
+            return json.dumps(payload)

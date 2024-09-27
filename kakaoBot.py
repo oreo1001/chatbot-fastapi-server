@@ -32,10 +32,10 @@ async def get_request_async_callback(request: Request,background_tasks: Backgrou
     session_id = kakao_ai_request['userRequest']['user']['id']
     callback_url = kakao_ai_request['userRequest']['callbackUrl']
     
-    if not session_id:
-        return JSONResponse(content={"message": "잘못된 요청입니다."})
-    if not question:
-        return JSONResponse(content={"message": "유효한 질문이 아닙니다."})
+    # if not session_id:
+    #     return JSONResponse(content={"message": "잘못된 요청입니다."})
+    # if not question:
+    #     return JSONResponse(content={"message": "유효한 질문이 아닙니다."})
     background_tasks.add_task(get_message,
         question=question, session_id = session_id,callback_url=callback_url)
     return {"version": "2.0", "useCallback": True} 
@@ -44,7 +44,7 @@ async def get_message(question , session_id, callback_url):
     service = KakaoService()
     response_data = service.run_langchain_json(question=question, sessionId=session_id)
     async with aiohttp.ClientSession() as session:
-        await session.post(callback_url, json=response_data)
+        await session.post(callback_url, data=response_data, headers={"Content-Type": "application/json"})
 
 @router.post("/test")
 async def test(request: Request):

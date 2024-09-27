@@ -35,7 +35,6 @@ async def get_request_async_callback(request: Request,background_tasks: Backgrou
     question = kakao_ai_request['userRequest']['utterance']
     session_id = kakao_ai_request['userRequest']['user']['id']
     callback_url = kakao_ai_request['userRequest']['callbackUrl']
-    logger.error('test'+callback_url)
     
     # if not session_id:
     #     return JSONResponse(content={"message": "잘못된 요청입니다."})

@@ -106,3 +106,39 @@ class KakaoService:
                 }
             }
             return JSONResponse(content=payload, headers={"Content-Type": "application/json"})
+        
+    def run_langchain_test(self,question, sessionId):
+        conversational_rag_chain = RunnableWithMessageHistory(
+            self.get_chain(),
+            lambda session_id: CustomMongoDBChatHistory(
+                session_id=session_id,
+                connection_string=connectionString,
+                database_name="kakao",
+                collection_name="chat_histories",
+            ),
+            input_messages_key="input",
+            history_messages_key="chat_history",
+            output_messages_key="answer",
+        )
+        try:
+            chat_invoke = conversational_rag_chain.invoke(
+                {"input": question},
+                config={"configurable": {"session_id": sessionId}},
+            )
+            payload = {
+                "answer": {
+                    "status": "normal",
+                    "sentence": chat_invoke['answer'],
+                    "dialog":"finish"
+                }
+            }
+            return JSONResponse(content=payload, headers={"Content-Type": "application/json"})
+        except Exception as e:
+            payload = {
+                "answer": {
+                    "status": "error",
+                    "sentence": f"Error: {str(e)}",
+                    "dialog":"finish"
+                }
+            }
+            return JSONResponse(content=payload, headers={"Content-Type": "application/json"})

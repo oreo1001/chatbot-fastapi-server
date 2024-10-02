@@ -48,7 +48,7 @@ async def get_message(question , session_id, callback_url):
     service = KakaoService()
     response_data = service.run_langchain_json(question=question, sessionId=session_id)
     async with aiohttp.ClientSession() as session:
-        async with session.post(callback_url, data=response_data) as response:
+        async with session.post(callback_url, json=response_data) as response:
             if response.status == 200:
                 print("Callback sent successfully")
             else:

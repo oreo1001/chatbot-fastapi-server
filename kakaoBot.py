@@ -9,6 +9,7 @@ from pymongo import MongoClient
 from models import connectionString
 from models.kakao_model import KakaoService
 from main import logger
+from logger_config import logger
 
 router = APIRouter(
     prefix="/kakao",
@@ -47,6 +48,9 @@ async def get_request_async_callback(request: Request,background_tasks: Backgrou
 async def get_message(question , session_id, callback_url):
     service = KakaoService()
     response_data = service.run_langchain_json(question=question, sessionId=session_id)
+    logger.info(response_data)
+    logger.info(callback_url)
+    
     async with aiohttp.ClientSession() as session:
         async with session.post(callback_url, json=response_data) as response:
             if response.status == 200:
@@ -60,4 +64,5 @@ async def test(request: Request):
     question = kakao_ai_request['userRequest']['utterance']
     session_id = kakao_ai_request['userRequest']['user']['id']
     service = KakaoService()
+    #logger.info(session_id)
     return service.run_langchain_test(question=question, sessionId=session_id)

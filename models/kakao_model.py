@@ -96,7 +96,8 @@ class KakaoService:
                     "dialog":"reply"
                 }
             }
-            return JSONResponse(content=payload, headers={"Content-Type": "application/json"})
+            # return JSONResponse(content=payload, headers={"Content-Type": "application/json"})
+            return payload
         except Exception as e:
             payload = {
                 "answer": {
@@ -105,7 +106,8 @@ class KakaoService:
                     "dialog":"finish"
                 }
             }
-            return JSONResponse(content=payload, headers={"Content-Type": "application/json"})
+            return payload
+            # return JSONResponse(content=payload, headers={"Content-Type": "application/json"})
         
     def run_langchain_test(self,question, sessionId):
         conversational_rag_chain = RunnableWithMessageHistory(

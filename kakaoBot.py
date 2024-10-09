@@ -1,9 +1,9 @@
 from itertools import chain
-import json
 import logging
 import aiohttp
 from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from fastapi.responses import JSONResponse
+import httpx
 import pytz
 from pymongo import MongoClient
 from models import connectionString
@@ -48,15 +48,21 @@ async def get_request_async_callback(request: Request,background_tasks: Backgrou
 async def get_message(question , session_id, callback_url):
     service = KakaoService()
     response_data = service.run_langchain_json(question=question, sessionId=session_id)
-    logger.info(response_data)
-    logger.info(callback_url)
+    #logger.info(response_data)
     
-    async with aiohttp.ClientSession() as session:
-        async with session.post(callback_url, json=response_data) as response:
-            if response.status == 200:
+    # async with aiohttp.ClientSession() as session:
+    #     async with session.post(callback_url, json=response_data) as response:
+    #         if response.status == 200:
+    #             print("Callback sent successfully")
+    #         else:
+    #             print("Failed to send callback:", response)
+
+    async with httpx.AsyncClient() as client:
+            response = await client.post(callback_url, json=response_data)
+            if response.status_code == 200:
                 print("Callback sent successfully")
             else:
-                print("Failed to send callback:", response)
+                print(f"Failed to send callback: {response.status_code} - {response.text}")
 
 @router.post("/test")
 async def test(request: Request):
@@ -64,5 +70,4 @@ async def test(request: Request):
     question = kakao_ai_request['userRequest']['utterance']
     session_id = kakao_ai_request['userRequest']['user']['id']
     service = KakaoService()
-    #logger.info(session_id)
     return service.run_langchain_test(question=question, sessionId=session_id)

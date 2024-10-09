@@ -58,14 +58,15 @@ async def get_message(question , session_id, callback_url):
     #             print("Failed to send callback:", response)
 
     async with httpx.AsyncClient() as client:
-            request = client.build_request("POST", callback_url, json=response_data)
-            # 기본 헤더 확인
-            logger.info("Request Headers:", request.headers)
-            response = await client.post(callback_url, json=response_data)
-            if response.status_code == 200:
-                print("Callback sent successfully")
-            else:
-                print(f"Failed to send callback: {response.status_code} - {response.text}")
+        request = client.build_request("POST", callback_url, json=response_data)
+        # 기본 헤더 확인
+        logger.info("아브라카다브라",request)
+        logger.info("Request Headers:", request.headers)
+        response = await client.post(callback_url, json=response_data)
+        if response.status_code == 200:
+            print("Callback sent successfully")
+        else:
+            print(f"Failed to send callback: {response.status_code} - {response.text}")
 
 @router.post("/test")
 async def test(request: Request):

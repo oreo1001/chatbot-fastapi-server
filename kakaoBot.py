@@ -54,6 +54,7 @@ async def get_message(question , session_id, callback_url):
     #             print("Failed to send callback:", response)
 
     async with httpx.AsyncClient() as client:
+        request = client.build_request("POST", callback_url, json=response_data)
         response = await client.post(callback_url, json=response_data)
         if response.status_code == 200:
             print("Callback sent successfully")

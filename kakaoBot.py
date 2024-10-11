@@ -1,8 +1,5 @@
-from itertools import chain
 import logging
-import aiohttp
 from fastapi import APIRouter, BackgroundTasks, Depends, Request
-from fastapi.responses import JSONResponse
 import httpx
 import pytz
 from pymongo import MongoClient
@@ -48,7 +45,6 @@ async def get_request_async_callback(request: Request,background_tasks: Backgrou
 async def get_message(question , session_id, callback_url):
     service = KakaoService()
     response_data = service.run_langchain_json(question=question, sessionId=session_id)
-    #logger.info(response_data)
     
     # async with aiohttp.ClientSession() as session:
     #     async with session.post(callback_url, json=response_data) as response:
@@ -58,11 +54,11 @@ async def get_message(question , session_id, callback_url):
     #             print("Failed to send callback:", response)
 
     async with httpx.AsyncClient() as client:
-            response = await client.post(callback_url, json=response_data)
-            if response.status_code == 200:
-                print("Callback sent successfully")
-            else:
-                print(f"Failed to send callback: {response.status_code} - {response.text}")
+        response = await client.post(callback_url, json=response_data)
+        if response.status_code == 200:
+            print("Callback sent successfully")
+        else:
+            print(f"Failed to send callback: {response.status_code} - {response.text}")
 
 @router.post("/test")
 async def test(request: Request):

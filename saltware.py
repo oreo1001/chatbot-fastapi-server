@@ -69,7 +69,6 @@ async def post_message_list(request: Request):
             "content": content,
             "url_list": url_list
         }
-    messageList.append(message)
-    messageList.append(message)
-    return JSONResponse(content={"msList": messageList})
+        messageList.append(message)
+    return JSONResponse(content={"messageList": messageList})
 ######################################################################################

@@ -1,4 +1,4 @@
-# Sapie FastAPI Server
+# Sapie Chatbot FastAPI Server
 
 Flask 서버 FastAPI로 마이그레이션 
 
